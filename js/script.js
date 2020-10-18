@@ -16,7 +16,7 @@ async function getProfiles() {
       <p class="card-text">${data.results[i].email}</p>
       <p class="card-text cap">${data.results[i].location.city}</p>
     </div>
-    <div class="modal-container"  style="display:none"  id="${i}">
+    <div class="modal-container" id="${i}" style="display:none">
                 <div class="modal">
                     <button id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                     <div class="modal-info-container">
@@ -46,7 +46,9 @@ async function makeClickable() {
     })
     let button = card.getElementsByTagName('button')[0];
     button.addEventListener('click', (e) => {
-    e.target.parentNode.parentNode.style.display = 'none';
+      const model = document.getElementById(card.id);
+      const modelContainer = model.getElementsByClassName('modal-container')[0];
+      modelContainer.style.display = 'none';
     })
     
   }}
