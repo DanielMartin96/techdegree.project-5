@@ -4,59 +4,52 @@ let profiles = [];
 async function getProfiles() {
   const response = await fetch(url);
   const data = await response.json();
-  for (i = 0; i < 12; i++) {
-    let profile = { img: `${data.results[i].picture.large}`,
-    firstName: `${data.results[i].name.first}`,
-    lastName: `${data.results[i].name.last}`, 
-    email: `${data.results[i].email}`,
-    city: `${data.results[i].location.city}` }
-   
-    profiles.push(profile);
-}}
-
-/* function createCardDiv() {
-const cardDiv = document.createElement('div');
-cardDiv.setAttribute('class', 'card');
-gallery.appendChild(cardDiv);
-} */
-
-/* function createImageContainer(){
-  const imageDiv = document.createElement('div');
-  const img = document.createElement('img');
-  imageDiv.setAttribute('class', 'card-img-container');
-  img.setAttribute('class', 'card-img')
-  img.setAttribute('src', 'https://placehold.it/90x90')
-  img.setAttribute('alt', 'profile picture')
-  gallery.lastChild.appendChild(imageDiv);
-  imageDiv.appendChild(img);
-}
-
-/* function createInfoContainer(profiles) {
-  const infoDiv = document.createElement('div');
-  const name = document.createElement('h3');
-  const email = document.createElement('p');
-  const city = document.createElement('p');
-  name.setAttribute('class', 'card-name cap');
-  name.setAttribute('id', 'name');
-  name.innerHTML = `${profiles[i].firstName} ${profiles[i].lastName}`;
-  email.setAttribute('class', 'card-text');
-  email.innerHTML = "danielmartin1996@hotmail.com";
-  city.setAttribute('class', 'card-text cap');
-  city.innerHTML = `${profiles[i].city}`;
-  gallery.lastChild.appendChild(infoDiv);
-  infoDiv.appendChild(name);
-  infoDiv.appendChild(email);
-  infoDiv.appendChild(city);
-} */
-
-/* function createCards() {
-  for (i=0; i< 12; i++) {
-    createCardDiv();
-    createImageContainer();
-    createInfoContainer(profiles);
+  for (let i = 0; i < 12; i++) {
+    const gallery = document.getElementById('gallery');
+    let html = document.createElement('div');
+    html.innerHTML = `<div class="card"  id="${i}">
+    <div class="card-img-container">
+      <img class="card-img" src= ${data.results[i].picture.large} alt="profile picture">
+    </div>
+    <div class="card-info-container">
+      <h3 id="name" class="card-name cap">${data.results[i].name.first} ${data.results[i].name.last}</h3>
+      <p class="card-text">${data.results[i].email}</p>
+      <p class="card-text cap">${data.results[i].location.city}</p>
+    </div>
+    <div class="modal-container"  style="display:none"  id="${i}">
+                <div class="modal">
+                    <button id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                    <div class="modal-info-container">
+                    <img class="modal-img" src= ${data.results[i].picture.large} alt="profile picture">
+                        <h3 id="name" class="modal-name cap">${data.results[i].name.first} ${data.results[i].name.last}</h3>
+                        <p class="modal-text">${data.results[i].email}</p>
+                        <p class="modal-text cap">${data.results[i].location.city}</p>
+                        <hr>
+                        <p class="modal-text">${data.results[i].cell}</p>
+                        <p class="modal-text">${data.results[i].location.street.number} ${data.results[i].location.street.name}, ${data.results[i].location.state}, ${data.results[i].location.postcode}</p>
+                        <p class="modal-text">Birthday: ${data.results[i].dob.date}</p>
+                    </div>
+                </div>`
+    gallery.appendChild(html); 
   }
-} */
+}
+    
 
-getProfiles();
-console.log(profiles);
-
+async function makeClickable() {
+  await getProfiles();
+  for (i = 0; i<12; i++) {
+    let card = document.getElementsByClassName('card')[i];
+    card.addEventListener('click', () => {   
+       const model = document.getElementById(card.id);
+       const container = model.lastChild;
+       container.style.display = 'block'; 
+    })
+    let button = card.getElementsByTagName('button')[0];
+    button.addEventListener('click', (e) => {
+    e.target.parentNode.parentNode.style.display = 'none';
+    })
+    
+  }}
+    
+  
+makeClickable()
