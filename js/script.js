@@ -1,13 +1,13 @@
 const url = "https://randomuser.me/api/?results=12";
 const gallery = document.getElementById('gallery');
-let profiles = [];
+let buttons = [];
 async function getProfiles() {
   const response = await fetch(url);
   const data = await response.json();
   for (let i = 0; i < 12; i++) {
     const gallery = document.getElementById('gallery');
     let html = document.createElement('div');
-    html.innerHTML = `<div class="card"  id="${i}">
+    html.innerHTML = `<div class="card" id="${i}">
     <div class="card-img-container">
       <img class="card-img" src= ${data.results[i].picture.large} alt="profile picture">
     </div>
@@ -33,25 +33,22 @@ async function getProfiles() {
     gallery.appendChild(html); 
   }
 }
-    
 
-async function makeClickable() {
-  await getProfiles();
-  for (i = 0; i<12; i++) {
-    let card = document.getElementsByClassName('card')[i];
-    card.addEventListener('click', () => {   
-       const model = document.getElementById(card.id);
-       const container = model.lastChild;
-       container.style.display = 'block'; 
+async function showModal(){
+await getProfiles();
+  for (i = 0; i< 12; i++) {
+    const card = document.getElementsByClassName('card')[i];
+    card.addEventListener('click', () => {
+    card.lastChild.style.display = 'block';
     })
-    let button = card.getElementsByTagName('button')[0];
+  }
+  for (i = 0; i< 12; i++) {
+    const button = document.getElementsByClassName('modal-close-btn')[i];
+    const modalContainer = document.getElementsByClassName('modal-container')[i];
     button.addEventListener('click', (e) => {
-      const model = document.getElementById(card.id);
-      const modelContainer = model.getElementsByClassName('modal-container')[0];
-      modelContainer.style.display = 'none';
+    modalContainer.style.display = 'none';
     })
-    
-  }}
-    
-  
-makeClickable()
+  }
+}
+
+showModal()
